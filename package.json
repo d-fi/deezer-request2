@@ -1,0 +1,27 @@
+{
+  "name": "deezer-request",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d-fi/deezer-request.git"
+  },
+  "keywords": [
+    "deezer",
+    "api"
+  ],
+  "author": "Sayem Chowdhury",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/d-fi/deezer-request/issues"
+  },
+  "homepage": "https://github.com/d-fi/deezer-request#readme",
+  "dependencies": {
+    "got": "^9.6.0",
+    "tough-cookie": "^3.0.1"
+  }
+}
