@@ -1,7 +1,7 @@
 ## Install
 
-`npm i deezer-request`
+`npm i deezer-request2`
 
 or
 
-`yarn add deezer-request`
+`yarn add deezer-request2`

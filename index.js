@@ -1,29 +1,16 @@
-const request = require("./request");
+const request = require('./request');
 
 const defaultAPIParameters = {
-  api_version: "1.0",
-  api_token: "",
-  input: 3
+  api_key: 'ZAIVAHCEISOHWAICUQUEXAEPICENGUAFAEZAIPHAELEEVAHPHUCUFONGUAPASUAY',
+  output: 3,
+  input: 3,
 };
 
-const unofficialApiUrl = "https://www.deezer.com/ajax/gw-light.php";
+const unofficialApiUrl = 'https://api.deezer.com/1.0/gateway.php';
 
 class DeezerApi {
   constructor(requestFactory) {
     this.baseParameters = defaultAPIParameters;
-  }
-
-  /**
-   * Get a cid for a unofficial api request.
-   *
-   * @return {Number}
-   */
-  static getApiCid() {
-    return Math.floor(1e9 * Math.random());
-  }
-
-  setCookie(name, value) {
-    request.setCookie(name, value, unofficialApiUrl);
   }
 
   setParameter(name, value) {
@@ -38,44 +25,11 @@ class DeezerApi {
     return request.post(
       unofficialApiUrl,
       this.getQueryParameters({
-        method: "deezer.pageTrack",
-        cid: this.constructor.getApiCid()
+        method: 'song.getData',
       }),
       {
-        sng_id: songID
-      },
-      true,
-      true,
-      true
-    );
-  }
-
-  getTrackInfos(...songIDs) {
-    return request.post(
-      unofficialApiUrl,
-      this.getQueryParameters({
-        method: "song.getListAllData",
-        cid: this.constructor.getApiCid()
-      }),
-      {
-        SNG_IDS: songIDs.map(value => [value, 0])
-      },
-      true,
-      true,
-      true
-    );
-  }
-
-  getUserData() {
-    return request.get(
-      unofficialApiUrl,
-      this.getQueryParameters({
-        method: "deezer.getUserData",
-        cid: this.constructor.getApiCid()
-      }),
-      true,
-      false,
-      true
+        sng_id: songID,
+      }
     );
   }
 
@@ -83,21 +37,17 @@ class DeezerApi {
     return request.post(
       unofficialApiUrl,
       this.getQueryParameters({
-        method: "deezer.pagePlaylist",
-        cid: this.constructor.getApiCid()
+        method: 'playlist.getSongs',
       }),
       {
         playlist_id: playlistID,
-        lang: "en",
+        lang: 'en',
         nb: -1,
         start: 0,
         tab: 0,
         tags: true,
-        header: true
-      },
-      true,
-      true,
-      true
+        header: true,
+      }
     );
   }
 
@@ -105,20 +55,16 @@ class DeezerApi {
     return request.post(
       unofficialApiUrl,
       this.getQueryParameters({
-        method: "artist.getData",
-        cid: this.constructor.getApiCid()
+        method: 'artist.getData',
       }),
       {
         art_id: artistID,
         filter_role_id: [0],
-        lang: "us",
+        lang: 'us',
         tab: 0,
         nb: -1,
-        start: 0
-      },
-      true,
-      true,
-      true
+        start: 0,
+      }
     );
   }
 
@@ -126,20 +72,16 @@ class DeezerApi {
     return request.post(
       unofficialApiUrl,
       this.getQueryParameters({
-        method: "album.getDiscography",
-        cid: this.constructor.getApiCid()
+        method: 'album.getDiscography',
       }),
       {
         art_id: artistID,
         filter_role_id: [0],
-        lang: "us",
+        lang: 'us',
         nb: 500,
         nb_songs: -1,
-        start: 0
-      },
-      true,
-      true,
-      true
+        start: 0,
+      }
     );
   }
 
@@ -147,17 +89,13 @@ class DeezerApi {
     return request.post(
       unofficialApiUrl,
       this.getQueryParameters({
-        method: "deezer.pageProfile",
-        cid: this.constructor.getApiCid()
+        method: 'mobile.pageUser',
       }),
       {
         user_id: profileID,
-        tab: "loved",
-        nb: -1
-      },
-      true,
-      true,
-      true
+        tab: 'loved',
+        nb: -1,
+      }
     );
   }
 
@@ -165,17 +103,13 @@ class DeezerApi {
     return request.post(
       unofficialApiUrl,
       this.getQueryParameters({
-        method: "deezer.pageAlbum",
-        cid: this.constructor.getApiCid()
+        method: 'deezer.pageAlbum',
       }),
       {
         alb_id: albumID,
-        lang: "us",
-        tab: 0
-      },
-      true,
-      true,
-      true
+        lang: 'us',
+        tab: 0,
+      }
     );
   }
 
@@ -183,17 +117,28 @@ class DeezerApi {
     return request.post(
       unofficialApiUrl,
       this.getQueryParameters({
-        method: "song.getListByAlbum",
-        cid: this.constructor.getApiCid()
+        method: 'song.getListByAlbum',
       }),
       {
         alb_id: albumID,
-        start: "0",
-        nb: "500"
-      },
-      true,
-      true,
-      true
+        start: '0',
+        nb: '500',
+      }
+    );
+  }
+
+  searchMusic(query, nb = 15) {
+    return request.post(
+      unofficialApiUrl,
+      this.getQueryParameters({
+        method: 'search.music',
+      }),
+      {
+        QUERY: query,
+        OUTPUT: 'TRACK',
+        NB: nb,
+        FILTER: 0,
+      }
     );
   }
 
@@ -201,23 +146,14 @@ class DeezerApi {
     return request.post(
       unofficialApiUrl,
       this.getQueryParameters({
-        method: "search.music",
-        cid: this.constructor.getApiCid()
+        method: 'search.music',
       }),
       {
-        QUERY:
-          "artist:'" +
-          trackInfos.ART_NAME +
-          "' track:'" +
-          trackInfos.SNG_TITLE +
-          "'",
-        OUTPUT: "TRACK",
-        NB: 50,
-        FILTER: 0
-      },
-      true,
-      true,
-      true
+        QUERY: "artist:'" + trackInfos.ART_NAME + "' track:'" + trackInfos.SNG_TITLE + "'",
+        OUTPUT: 'TRACK',
+        NB: 10,
+        FILTER: 0,
+      }
     );
   }
 
@@ -225,15 +161,11 @@ class DeezerApi {
     return request.post(
       unofficialApiUrl,
       this.getQueryParameters({
-        method: "song.getLyrics",
-        cid: this.constructor.getApiCid()
+        method: 'song.getLyrics',
       }),
       {
-        sng_id: songID
-      },
-      true,
-      true,
-      true
+        sng_id: songID,
+      }
     );
   }
 }
