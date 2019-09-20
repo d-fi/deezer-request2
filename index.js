@@ -33,6 +33,19 @@ class DeezerApi {
     );
   }
 
+  getPlaylistInfo(playlistID) {
+    return request.post(
+      unofficialApiUrl,
+      this.getQueryParameters({
+        method: 'mobile.pagePlaylist',
+      }),
+      {
+        playlist_id: playlistID,
+        lang: 'en',
+      }
+    );
+  }
+
   getPlaylistTracks(playlistID) {
     return request.post(
       unofficialApiUrl,
@@ -60,7 +73,7 @@ class DeezerApi {
       {
         art_id: artistID,
         filter_role_id: [0],
-        lang: 'us',
+        lang: 'en',
         tab: 0,
         nb: -1,
         start: 0,
@@ -77,7 +90,7 @@ class DeezerApi {
       {
         art_id: artistID,
         filter_role_id: [0],
-        lang: 'us',
+        lang: 'en',
         nb: 500,
         nb_songs: -1,
         start: 0,
@@ -134,25 +147,26 @@ class DeezerApi {
         method: 'search.music',
       }),
       {
-        QUERY: query,
-        OUTPUT: 'TRACK',
-        NB: nb,
-        FILTER: 0,
+        query,
+        nb,
+        output: 'TRACK',
+        filter: 'TRACK',
+        start: 0,
       }
     );
   }
 
-  searchAlternative(trackInfos) {
+  searchAlternative(trackInfos, nb = 10) {
     return request.post(
       unofficialApiUrl,
       this.getQueryParameters({
         method: 'search.music',
       }),
       {
-        QUERY: "artist:'" + trackInfos.ART_NAME + "' track:'" + trackInfos.SNG_TITLE + "'",
-        OUTPUT: 'TRACK',
-        NB: 10,
-        FILTER: 0,
+        query: "artist:'" + trackInfos.ART_NAME + "' track:'" + trackInfos.SNG_TITLE + "'",
+        output: 'TRACK',
+        filter: 'TRACK',
+        nb,
       }
     );
   }
