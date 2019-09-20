@@ -37,7 +37,7 @@ class DeezerApi {
     return request.post(
       unofficialApiUrl,
       this.getQueryParameters({
-        method: 'mobile.pagePlaylist',
+        method: 'playlist.getData',
       }),
       {
         playlist_id: playlistID,
