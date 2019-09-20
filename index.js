@@ -116,7 +116,7 @@ class DeezerApi {
     return request.post(
       unofficialApiUrl,
       this.getQueryParameters({
-        method: 'deezer.pageAlbum',
+        method: 'song.getListByAlbum',
       }),
       {
         alb_id: albumID,
@@ -130,7 +130,7 @@ class DeezerApi {
     return request.post(
       unofficialApiUrl,
       this.getQueryParameters({
-        method: 'song.getListByAlbum',
+        method: 'album.getData',
       }),
       {
         alb_id: albumID,
