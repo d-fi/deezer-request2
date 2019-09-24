@@ -1,4 +1,4 @@
-const request = require('./request');
+const axios = require('axios');
 
 const defaultAPIParameters = {
   api_key: 'ZAIVAHCEISOHWAICUQUEXAEPICENGUAFAEZAIPHAELEEVAHPHUCUFONGUAPASUAY',
@@ -7,6 +7,18 @@ const defaultAPIParameters = {
 };
 
 const unofficialApiUrl = 'https://api.deezer.com/1.0/gateway.php';
+
+const DefaultHeaders = {
+  'user-agent': 'User-Agent: Deezer/7.17.0.2 CFNetwork/1098.6 Darwin/19.0.0',
+  'cache-control': 'max-age=0',
+  'accept-language': 'en-US,en;q=0.9,en-US;q=0.8,en;q=0.7',
+  'accept-charset': 'utf-8,ISO-8859-1;q=0.8,*;q=0.7',
+  'content-type': 'text/plain;charset=UTF-8',
+};
+
+const request = (url, params, data) => {
+  return axios.post(url, data, { params, headers: DefaultHeaders });
+};
 
 class DeezerApi {
   constructor(requestFactory) {
@@ -185,4 +197,25 @@ class DeezerApi {
 }
 
 const deezerApi = new DeezerApi();
+
+const initDeezerApi = async () => {
+  const { data } = await axios.get(
+    'https://www.deezer.com/ajax/gw-light.php?method=deezer.ping&api_version=1.0&api_token'
+  );
+
+  deezerApi.setParameter('sid', data.results.SESSION);
+  return data.results.SESSION;
+};
+
+// Add a request interceptor
+axios.interceptors.response.use(async (response) => {
+  // Do something before request is sent
+  if (response.data.error.NEED_API_AUTH_REQUIRED) {
+    const sid = await initDeezerApi();
+    response.config.params.sid = sid;
+    return await axios(response.config);
+  }
+  return response;
+});
+
 module.exports = deezerApi;
