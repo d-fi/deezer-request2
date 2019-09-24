@@ -1,5 +1,4 @@
-const got = require('got');
-const map = new Map();
+const axios = require('axios');
 
 const DefaultHeaders = {
   'user-agent': 'User-Agent: Deezer/7.17.0.2 CFNetwork/1098.6 Darwin/19.0.0',
@@ -9,34 +8,8 @@ const DefaultHeaders = {
   'content-type': 'text/plain;charset=UTF-8',
 };
 
-class Request {
-  post(url, parameters, body, cache = map, json = true) {
-    let options = {
-      headers: DefaultHeaders,
-      query: parameters,
-      body: body,
-      json,
-      cache,
-    };
+const request = (url, params, data, cache = map) => {
+  return axios.post(url, data, { params, headers: DefaultHeaders });
+};
 
-    return got.post(url, options);
-  }
-
-  get(url, parameters, cache = map, json = true) {
-    let options = {
-      headers: DefaultHeaders,
-      query: parameters,
-      cache,
-      json,
-    };
-
-    return got.get(url, options);
-  }
-
-  do(...args) {
-    return got(...args);
-  }
-}
-
-const request = new Request();
 module.exports = request;

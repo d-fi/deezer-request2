@@ -22,7 +22,7 @@ class DeezerApi {
   }
 
   getTrackInfo(songID) {
-    return request.post(
+    return request(
       unofficialApiUrl,
       this.getQueryParameters({
         method: 'song.getData',
@@ -34,7 +34,7 @@ class DeezerApi {
   }
 
   getPlaylistInfo(playlistID) {
-    return request.post(
+    return request(
       unofficialApiUrl,
       this.getQueryParameters({
         method: 'playlist.getData',
@@ -47,7 +47,7 @@ class DeezerApi {
   }
 
   getPlaylistTracks(playlistID) {
-    return request.post(
+    return request(
       unofficialApiUrl,
       this.getQueryParameters({
         method: 'playlist.getSongs',
@@ -65,7 +65,7 @@ class DeezerApi {
   }
 
   getArtistInfo(artistID) {
-    return request.post(
+    return request(
       unofficialApiUrl,
       this.getQueryParameters({
         method: 'artist.getData',
@@ -82,7 +82,7 @@ class DeezerApi {
   }
 
   getDiscography(artistID) {
-    return request.post(
+    return request(
       unofficialApiUrl,
       this.getQueryParameters({
         method: 'album.getDiscography',
@@ -99,7 +99,7 @@ class DeezerApi {
   }
 
   getProfile(profileID) {
-    return request.post(
+    return request(
       unofficialApiUrl,
       this.getQueryParameters({
         method: 'mobile.pageUser',
@@ -113,7 +113,7 @@ class DeezerApi {
   }
 
   getAlbumTracks(albumID) {
-    return request.post(
+    return request(
       unofficialApiUrl,
       this.getQueryParameters({
         method: 'song.getListByAlbum',
@@ -127,7 +127,7 @@ class DeezerApi {
   }
 
   getAlbumTrackInfo(albumID) {
-    return request.post(
+    return request(
       unofficialApiUrl,
       this.getQueryParameters({
         method: 'album.getData',
@@ -141,7 +141,7 @@ class DeezerApi {
   }
 
   searchMusic(query, nb = 15) {
-    return request.post(
+    return request(
       unofficialApiUrl,
       this.getQueryParameters({
         method: 'search.music',
@@ -157,7 +157,7 @@ class DeezerApi {
   }
 
   searchAlternative(trackInfos, nb = 10) {
-    return request.post(
+    return request(
       unofficialApiUrl,
       this.getQueryParameters({
         method: 'search.music',
@@ -172,7 +172,7 @@ class DeezerApi {
   }
 
   getLyrics(songID) {
-    return request.post(
+    return request(
       unofficialApiUrl,
       this.getQueryParameters({
         method: 'song.getLyrics',
