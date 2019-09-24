@@ -23,10 +23,20 @@ const request = (url, params, data) => {
 class DeezerApi {
   constructor(requestFactory) {
     this.baseParameters = defaultAPIParameters;
+    this.initDeezerApi();
   }
 
   setParameter(name, value) {
     this.baseParameters[name] = value;
+  }
+
+  async initDeezerApi() {
+    const { data } = await axios.get(
+      'https://www.deezer.com/ajax/gw-light.php?method=deezer.ping&api_version=1.0&api_token'
+    );
+
+    this.setParameter('sid', data.results.SESSION);
+    return data.results.SESSION;
   }
 
   getQueryParameters(parameters) {
@@ -198,20 +208,11 @@ class DeezerApi {
 
 const deezerApi = new DeezerApi();
 
-const initDeezerApi = async () => {
-  const { data } = await axios.get(
-    'https://www.deezer.com/ajax/gw-light.php?method=deezer.ping&api_version=1.0&api_token'
-  );
-
-  deezerApi.setParameter('sid', data.results.SESSION);
-  return data.results.SESSION;
-};
-
 // Add a request interceptor
 axios.interceptors.response.use(async (response) => {
   // Do something before request is sent
   if (response.data.error.NEED_API_AUTH_REQUIRED) {
-    const sid = await initDeezerApi();
+    const sid = await deezerApi.initDeezerApi();
     response.config.params.sid = sid;
     return await axios(response.config);
   }
