@@ -212,7 +212,7 @@ const deezerApi = new DeezerApi();
 // Add a request interceptor
 axios.interceptors.response.use(async (response) => {
   // Do something before request is sent
-  if (Object.keys(response.data.error).length > 0) {
+  if (response.data.error && Object.keys(response.data.error).length > 0) {
     if (response.data.error.NEED_API_AUTH_REQUIRED) {
       const sid = await deezerApi.initDeezerApi();
       response.config.params.sid = sid;
