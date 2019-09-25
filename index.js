@@ -1,4 +1,5 @@
 const axios = require('axios');
+const delay = require('delay');
 
 const defaultAPIParameters = {
   api_key: 'ZAIVAHCEISOHWAICUQUEXAEPICENGUAFAEZAIPHAELEEVAHPHUCUFONGUAPASUAY',
@@ -14,10 +15,6 @@ const DefaultHeaders = {
   'accept-language': 'en-US,en;q=0.9,en-US;q=0.8,en;q=0.7',
   'accept-charset': 'utf-8,ISO-8859-1;q=0.8,*;q=0.7',
   'content-type': 'text/plain;charset=UTF-8',
-};
-
-const sleep = (ms) => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
 const request = (url, params, data) => {
@@ -221,7 +218,7 @@ axios.interceptors.response.use(async (response) => {
       response.config.params.sid = sid;
       return await axios(response.config);
     } else if (response.data.error.code == 4) {
-      await sleep(1000);
+      await delay(1000);
       return await axios(response.config);
     }
   }
