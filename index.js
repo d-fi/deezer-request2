@@ -219,8 +219,7 @@ axios.interceptors.response.use(async (response) => {
     const sid = await deezerApi.initDeezerApi();
     response.config.params.sid = sid;
     return await axios(response.config);
-  }
-  if (response.data.error.code == 4) {
+  } else if (response.data.error.code == 4) {
     await sleep(1000);
     return await axios(response.config);
   }
