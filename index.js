@@ -215,13 +215,15 @@ const deezerApi = new DeezerApi();
 // Add a request interceptor
 axios.interceptors.response.use(async (response) => {
   // Do something before request is sent
-  if (response.data.error.NEED_API_AUTH_REQUIRED) {
-    const sid = await deezerApi.initDeezerApi();
-    response.config.params.sid = sid;
-    return await axios(response.config);
-  } else if (response.data.error.code == 4) {
-    await sleep(1000);
-    return await axios(response.config);
+  if (Object.keys(response.data.error).length > 0) {
+    if (response.data.error.NEED_API_AUTH_REQUIRED) {
+      const sid = await deezerApi.initDeezerApi();
+      response.config.params.sid = sid;
+      return await axios(response.config);
+    } else if (response.data.error.code == 4) {
+      await sleep(1000);
+      return await axios(response.config);
+    }
   }
   return response;
 });
