@@ -16,6 +16,10 @@ const DefaultHeaders = {
   'content-type': 'text/plain;charset=UTF-8',
 };
 
+const sleep = (ms) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
 const request = (url, params, data) => {
   return axios.post(url, data, { params, headers: DefaultHeaders });
 };
@@ -214,6 +218,10 @@ axios.interceptors.response.use(async (response) => {
   if (response.data.error.NEED_API_AUTH_REQUIRED) {
     const sid = await deezerApi.initDeezerApi();
     response.config.params.sid = sid;
+    return await axios(response.config);
+  }
+  if (response.data.error.code == 4) {
+    await sleep(1000);
     return await axios(response.config);
   }
   return response;
