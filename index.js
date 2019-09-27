@@ -46,13 +46,8 @@ class DeezerApi {
     return Object.assign(this.baseParameters, parameters);
   }
 
-  async getTrackInfo(songID) {
-    if (albumCache[songID]) {
-      return albumCache[songID];
-    }
-
-    let { data } = await axios('https://api.deezer.com/album/' + songID);
-    let results = await request(
+  getTrackInfo(songID) {
+    return request(
       unofficialApiUrl,
       this.getQueryParameters({
         method: 'song.getData',
@@ -61,11 +56,6 @@ class DeezerApi {
         sng_id: songID,
       }
     );
-
-    results.data.results.GENRES = data.genres.data.map((genre) => genre.name);
-    albumCache[songID] = results;
-
-    return results;
   }
 
   getPlaylistInfo(playlistID) {
@@ -161,8 +151,14 @@ class DeezerApi {
     );
   }
 
-  getAlbumTrackInfo(albumID) {
-    return request(
+  async getAlbumTrackInfo(albumID) {
+    if (albumCache[albumID]) {
+      return albumCache[albumID];
+    }
+
+    let { data } = await axios('https://api.deezer.com/album/' + albumID);
+
+    let results = await request(
       unofficialApiUrl,
       this.getQueryParameters({
         method: 'album.getData',
@@ -173,6 +169,11 @@ class DeezerApi {
         nb: '500',
       }
     );
+
+    results.data.results.GENRES = data.genres.data.map((genre) => genre.name);
+    albumCache[albumID] = results;
+
+    return results;
   }
 
   searchMusic(query, nb = 15) {
