@@ -17,6 +17,8 @@ const DefaultHeaders = {
   'content-type': 'text/plain;charset=UTF-8',
 };
 
+const albumCache = new Map();
+
 const request = (url, params, data) => {
   return axios.post(url, data, { params, headers: DefaultHeaders });
 };
@@ -44,8 +46,13 @@ class DeezerApi {
     return Object.assign(this.baseParameters, parameters);
   }
 
-  getTrackInfo(songID) {
-    return request(
+  async getTrackInfo(songID) {
+    if (albumCache[songID]) {
+      return albumCache[songID];
+    }
+
+    let { data } = await axios('https://api.deezer.com/album/' + id);
+    let results = await request(
       unofficialApiUrl,
       this.getQueryParameters({
         method: 'song.getData',
@@ -54,6 +61,11 @@ class DeezerApi {
         sng_id: songID,
       }
     );
+
+    results.data.GENRES = data.genres.data.map((genre) => genre.name);
+    albumCache[songID] = results;
+
+    return results;
   }
 
   getPlaylistInfo(playlistID) {
