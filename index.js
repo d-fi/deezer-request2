@@ -51,7 +51,7 @@ class DeezerApi {
       return albumCache[songID];
     }
 
-    let { data } = await axios('https://api.deezer.com/album/' + id);
+    let { data } = await axios('https://api.deezer.com/album/' + songID);
     let results = await request(
       unofficialApiUrl,
       this.getQueryParameters({
