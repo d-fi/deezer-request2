@@ -179,6 +179,7 @@ class DeezerApi {
     );
 
     results.data.results.GENRES = data.genres.data.map((genre) => genre.name);
+    results.data.results.LABEL = data.label;
     albumCache[albumID] = results;
 
     return results;
