@@ -46,8 +46,10 @@ class DeezerApi {
     return Object.assign(this.baseParameters, parameters);
   }
 
-  getTrackInfo(songID) {
-    return request(
+  async getTrackInfo(songID) {
+    let { data } = await axios('https://api.deezer.com/track/' + songID);
+
+    let results = await request(
       unofficialApiUrl,
       this.getQueryParameters({
         method: 'song.getData',
@@ -56,6 +58,12 @@ class DeezerApi {
         sng_id: songID,
       }
     );
+
+    results.data.results.TRACK_POSITION = data.track_position;
+    results.data.results.DISK_NUMBER = data.disk_number;
+    results.data.results.BPM = data.bpm;
+    results.data.results.GAIN = data.gain;
+    return results;
   }
 
   getPlaylistInfo(playlistID) {
