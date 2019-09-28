@@ -154,7 +154,7 @@ class DeezerApi {
       {
         alb_id: albumID,
         lang: 'us',
-        tab: 0,
+        nb: -1,
       }
     );
   }
