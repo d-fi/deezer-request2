@@ -26,14 +26,16 @@ const request = (url, params, data) => {
 class DeezerApi {
   constructor(arl) {
     this.baseParameters = defaultAPIParameters;
+    this.arl = '';
   }
 
   setParameter(name, value) {
     this.baseParameters[name] = value;
   }
 
-  async initDeezerApi(arl, options = {}) {
+  async initDeezerApi(arl = this.arl, options = {}) {
     if (arl) {
+      this.arl = arl;
       options = {
         ...options,
         withCredentials: true,
